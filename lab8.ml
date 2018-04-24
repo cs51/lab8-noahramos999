@@ -133,17 +133,15 @@ one. If there is no listener with that id, do nothing.
 ......................................................................*)
 
   let remove_listener (evt : 'a event) (i : id) : unit =
-    let f (w : 'a waiter) : bool =
-      w.id <> i in
-    evt := List.filter f (!evt)
+    evt := List.filter (fun f -> f.id <> i) (!evt)
 
 (*......................................................................
 Exercise 3: Write fire_event, which will execute all event handlers
 listening for the event.
 ......................................................................*)
 
-  let fire_event (evt : 'a event) (arg : 'a) : unit =
-    failwith "WEvent.fire_event not implemented"
+  let rec fire_event (evt : 'a event) (arg : 'a) : unit =
+    List.iter (fun w -> w.action arg) !evt
 
 end
 
